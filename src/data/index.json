@@ -28,6 +28,7 @@
             "type": "datepicker",
             "name": "birth",
             "label": "Birth Date",
+            "placeholder": "Select birth date",
             "required": true,
             "layout": { "colSpan": 1 }
           }
@@ -56,12 +57,12 @@
                   {
                     "id": 1,
                     "value": "tashkent_region",
-                    "title": "Tashkent region"
+                    "label": "Tashkent region"
                   },
                   {
                     "id": 2,
                     "value": "tashkent_city",
-                    "title": "Tashkent city"
+                    "label": "Tashkent city"
                   }
                 ]
               },
@@ -73,12 +74,12 @@
                   {
                     "id": 1,
                     "value": "samarkand_region",
-                    "title": "Samarkand region"
+                    "label": "Samarkand region"
                   },
                   {
                     "id": 2,
                     "value": "samarkand_city",
-                    "title": "Samarkand city"
+                    "label": "Samarkand city"
                   }
                 ]
               }
@@ -91,7 +92,7 @@
         "fields": [
           {
             "key": "gender",
-            "type": "radio",
+            "type": "radioGroup",
             "label": "Gender",
             "name": "gender",
             "options": [
@@ -104,8 +105,25 @@
             "key": "accept_terms",
             "type": "checkbox",
             "label": "I accept the terms and conditions",
+            "placeholder": "I accept the terms and conditions",
             "name": "accept_terms",
             "required": true,
+            "multiple": false,
+            "layout": { "colSpan": 3 }
+          },
+          {
+            "key": "accept_terms",
+            "type": "checkbox",
+            "label": "I accept the terms and conditions",
+            "placeholder": "I accept the terms and conditions",
+            "name": "accept_terms",
+            "required": true,
+            "multiple": true,
+            "options": [
+              { "label": "Option 1", "value": "option1" },
+              { "label": "Option 2", "value": "option2" },
+              { "label": "Option 3", "value": "option3" }
+            ],
             "layout": { "colSpan": 3 }
           }
         ]
