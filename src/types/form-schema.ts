@@ -21,6 +21,7 @@ export interface FormRule {
   message: string
   type?: string
   min?: number
+  trigger?: string[]
 }
 
 export interface InputField extends BaseFormField {

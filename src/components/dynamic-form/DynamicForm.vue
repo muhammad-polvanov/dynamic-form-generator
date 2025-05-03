@@ -7,7 +7,7 @@
     label-position="top"
     @submit.prevent="handleSubmit"
   >
-    <h1 class="text-2xl font-bold mb-2">{{ formData.form.title }}</h1>
+    <h1 class="text-2xl font-bold mb-2">{{ formData.title }}</h1>
     <template v-for="section in formData.form.form_data" :key="section.id">
       <div
         class="form-section border border-transparent rounded-md transition-all"
@@ -73,16 +73,14 @@ import EditDynamicField from "./EditDynamicField.vue"
 import DynamicField from "./DynamicField.vue"
 import type {
   FormField,
-  InputField,
   FormModel,
-  BaseFormField,
   FormData,
-  FormRule,
+  FormRules,
 } from "../../types/form-schema"
 
 const props = defineProps<{
   formData: FormData
-  formRules: FormRule
+  formRules: FormRules
 }>()
 
 const emit = defineEmits<{
@@ -137,7 +135,11 @@ const handleEditField = (field: FormField) => {
   showFieldEditor.value = true
 }
 
-const saveFieldChanges = (updatedField: BaseFormField | InputField) => {
+const saveFieldChanges = (updatedField: {
+  key: string
+  label: string
+  placeholder?: string
+}) => {
   if (!editingField.value) return
   // Find the field in the form data and update it
   const sections = props.formData.form.form_data

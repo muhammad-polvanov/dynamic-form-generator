@@ -36,6 +36,7 @@ export const useDraggable = (formData: FormSection[]) => {
       ) as FormField
       elementCopy.key = `${elementCopy.key}_${Date.now()}`
       elementCopy.name = `${elementCopy.name}_${Date.now()}`
+      elementCopy.id = Date.now() // Ensure we have a unique ID
 
       // Find the section and create a new array to trigger reactivity
       const sectionIndex = formData.findIndex(
