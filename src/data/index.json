@@ -1,43 +1,87 @@
 {
   "form": {
-    "title": "User Registration",
-    "layout": {
-      "type": "grid",
-      "columns": 3
-    },
+    "title": "Dynamic Form Example",
     "form_data": [
       {
         "id": 1,
+        "columns": 2,
         "fields": [
           {
+            "id": 1,
             "key": "full_name",
-            "type": "text",
+            "type": "input",
             "label": "Full Name",
+            "variant": "text",
             "name": "name",
+            "editable": true,
             "placeholder": "Enter your full name",
-            "required": true,
-            "layout": { "colSpan": 3 }
+            "order": 1,
+            "rules": [
+              { "required": true, "message": "Full name is required" },
+              { "min": 3, "message": "Full name must be at least 3 characters" }
+            ]
+          },
+          {
+            "id": 2,
+            "key": "email",
+            "type": "input",
+            "label": "Email",
+            "variant": "email",
+            "name": "email",
+            "editable": true,
+            "order": 2,
+            "placeholder": "Enter your email",
+            "rules": [
+              { "required": true, "message": "Email is required" },
+              {
+                "type": "email",
+                "message": "Please enter a valid email address"
+              }
+            ]
           }
         ]
       },
       {
         "id": 2,
+        "columns": 1,
         "fields": [
           {
-            "key": "birth_date",
-            "type": "datepicker",
-            "name": "birth",
-            "label": "Birth Date",
-            "placeholder": "Select birth date",
-            "required": true,
-            "layout": { "colSpan": 1 }
+            "id": 3,
+            "key": "message",
+            "type": "textarea",
+            "label": "Message",
+            "name": "message",
+            "editable": true,
+            "order": 1,
+            "placeholder": "Enter your message",
+            "rules": [
+              { "required": true, "message": "Message is required" },
+              { "min": 10, "message": "Message must be at least 10 characters" }
+            ]
           }
         ]
       },
       {
         "id": 3,
+        "columns": 1,
         "fields": [
           {
+            "id": 4,
+            "key": "birth_date",
+            "type": "datepicker",
+            "name": "birth",
+            "label": "Birth Date",
+            "placeholder": "Select birth date",
+            "editable": true
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "columns": 1,
+        "fields": [
+          {
+            "id": 5,
             "key": "region",
             "type": "select",
             "label": "Region",
@@ -47,7 +91,6 @@
             "childLabel": "District",
             "childPlaceholder": "Select district",
             "childName": "district",
-            "layout": { "colSpan": 1 },
             "options": [
               {
                 "id": 1,
@@ -88,9 +131,11 @@
         ]
       },
       {
-        "id": 4,
+        "id": 5,
+        "columns": 1,
         "fields": [
           {
+            "id": 6,
             "key": "gender",
             "type": "radioGroup",
             "label": "Gender",
@@ -98,33 +143,42 @@
             "options": [
               { "label": "Male", "value": "male" },
               { "label": "Female", "value": "female" }
-            ],
-            "layout": { "colSpan": 3 }
-          },
+            ]
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "columns": 1,
+        "fields": [
           {
+            "id": 7,
             "key": "accept_terms",
             "type": "checkbox",
             "label": "I accept the terms and conditions",
             "placeholder": "I accept the terms and conditions",
             "name": "accept_terms",
-            "required": true,
-            "multiple": false,
-            "layout": { "colSpan": 3 }
-          },
+            "multiple": false
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "columns": 1,
+        "fields": [
           {
-            "key": "accept_terms",
+            "id": 8,
+            "key": "fruits",
             "type": "checkbox",
-            "label": "I accept the terms and conditions",
-            "placeholder": "I accept the terms and conditions",
-            "name": "accept_terms",
-            "required": true,
+            "label": "Fruits",
+            "placeholder": "Select fruits",
+            "name": "fruits",
             "multiple": true,
             "options": [
-              { "label": "Option 1", "value": "option1" },
-              { "label": "Option 2", "value": "option2" },
-              { "label": "Option 3", "value": "option3" }
-            ],
-            "layout": { "colSpan": 3 }
+              { "label": "Apple", "value": "apple" },
+              { "label": "Banana", "value": "banana" },
+              { "label": "Orange", "value": "orange" }
+            ]
           }
         ]
       }
