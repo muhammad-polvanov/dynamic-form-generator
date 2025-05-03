@@ -6,6 +6,7 @@ export interface FormOption {
 }
 
 export interface BaseFormField {
+  id: number
   key: string
   type: string
   label: string
@@ -67,6 +68,13 @@ export interface FormSection {
   id: number
   columns: number // Number of form elements in one row
   fields: FormField[]
+}
+
+export interface FormData {
+  title: string
+  form: {
+    form_data: FormSection[]
+  }
 }
 
 export interface FormModel {

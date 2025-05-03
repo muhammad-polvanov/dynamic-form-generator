@@ -1,0 +1,78 @@
+export const draggableElements = [
+  {
+    key: `element_${Date.now()}`,
+    type: "input",
+    label: "Custom Field",
+    variant: "text",
+    name: `field_${Date.now()}`,
+    editable: true,
+    placeholder: "Enter your full name",
+  },
+  {
+    key: `element_${Date.now()}`,
+    type: "textarea",
+    label: "Custom Field",
+    name: `field_${Date.now()}`,
+    editable: true,
+    placeholder: "Enter your message",
+  },
+  {
+    key: `element_${Date.now()}`,
+    type: "datepicker",
+    name: `field_${Date.now()}`,
+    label: "Custom Field",
+    placeholder: "Select birth date",
+    editable: true,
+  },
+  {
+    key: `element_${Date.now()}`,
+    type: "select",
+    label: "Custom Field",
+    name: `field_${Date.now()}`,
+    placeholder: "Select region",
+    editable: true,
+    options: [
+      {
+        id: 1,
+        label: "Option 1",
+        value: "option_1",
+      },
+      {
+        id: 2,
+        label: "Option 2",
+        value: "option_2",
+      },
+    ],
+  },
+  {
+    key: `element_${Date.now()}`,
+    type: "radioGroup",
+    label: "Custom Field",
+    name: `field_${Date.now()}`,
+    options: [
+      { label: "Option 1", value: "option_1" },
+      { label: "Option 2", value: "option_2" },
+    ],
+  },
+  {
+    key: `element_${Date.now()}`,
+    type: "checkbox",
+    label: "Custom Field",
+    placeholder: "Custom Field",
+    name: `field_${Date.now()}`,
+    multiple: false,
+  },
+  {
+    key: `element_${Date.now()}`,
+    type: "checkbox",
+    label: "Custom Field",
+    placeholder: "Custom Field",
+    name: `field_${Date.now()}`,
+    multiple: true,
+    options: [
+      { label: "Option 1", value: "option_1" },
+      { label: "Option 2", value: "option_2" },
+      { label: "Option 3", value: "option_3" },
+    ],
+  },
+]

@@ -51,6 +51,16 @@
         />
       </el-select>
     </template>
+    <template v-else-if="isSelectField(field) && !field.childIncluded">
+      <el-select v-model="form[field.name]" :placeholder="field.placeholder">
+        <el-option
+          v-for="option in field.options"
+          :key="option.value"
+          :label="option.label"
+          :value="option.value"
+        />
+      </el-select>
+    </template>
 
     <!-- Radio Group -->
     <el-radio-group v-else-if="isRadioField(field)" v-model="form[field.name]">
@@ -80,6 +90,7 @@
         </el-checkbox>
       </el-checkbox-group>
     </template>
+    
   </div>
 </template>
 <script setup lang="ts">

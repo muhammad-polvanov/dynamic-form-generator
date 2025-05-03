@@ -3,7 +3,7 @@
     <h2 class="text-lg font-medium mb-3">Form Preview</h2>
     <div class="bg-white p-3 rounded border overflow-auto max-h-[500px]">
       <pre class="text-sm text-gray-700 whitespace-pre-wrap">{{
-        JSON.stringify(formModel, null, 2)
+        formModel
       }}</pre>
     </div>
   </div>
@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 defineProps<{
-  formModel: Record<string, string[]>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formModel: Record<string, any>
 }>()
 </script>
