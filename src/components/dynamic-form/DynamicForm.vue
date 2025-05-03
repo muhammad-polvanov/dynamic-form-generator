@@ -8,7 +8,7 @@
     @submit.prevent="handleSubmit"
   >
     <h1 class="text-2xl font-bold mb-2">{{ typedFormData.form.title }}</h1>
-    <template v-for="(section, i) in typedFormData.form.form_data" :key="i">
+    <template v-for="section in typedFormData.form.form_data" :key="section.id">
       <div class="section-wrapper">
         <el-row :gutter="20">
           <template v-for="(field, index) in section.fields" :key="field.key">
@@ -26,91 +26,11 @@
                     </ElIcon>
                   </div>
                 </template>
-                <!-- Text Input -->
-                <el-input
-                  v-if="isInputField(field)"
-                  v-model="formModel[field.name]"
-                  :placeholder="field.placeholder"
-                  :type="field.variant"
-                  :rules="field.rules"
+                <DynamicField
+                  v-model="formModel"
+                  :field="field"
+                  :form-data="typedFormData.form.form_data"
                 />
-
-                <!-- Text Area -->
-                <el-input
-                  v-else-if="isTextAreaField(field)"
-                  v-model="formModel[field.name]"
-                  :placeholder="field.placeholder"
-                  type="textarea"
-                />
-                <!-- Date Picker -->
-                <el-date-picker
-                  v-else-if="isDateField(field)"
-                  v-model="formModel[field.name]"
-                  type="date"
-                  :placeholder="field.placeholder"
-                />
-
-                <!-- Select with Child -->
-                <template
-                  v-else-if="isSelectField(field) && field.childIncluded"
-                >
-                  <el-select
-                    v-model="formModel[field.name]"
-                    :placeholder="field.placeholder"
-                    @change="handleParentSelectChange"
-                  >
-                    <el-option
-                      v-for="option in field.options"
-                      :key="option.id"
-                      :label="option.label"
-                      :value="option.value"
-                    />
-                  </el-select>
-                  <el-select
-                    v-model="formModel[field.childName]"
-                    :placeholder="field.childPlaceholder"
-                    class="mt-2"
-                  >
-                    <el-option
-                      v-for="childOption in getChildOptions(field)"
-                      :key="childOption.id"
-                      :label="childOption.label"
-                      :value="childOption.value"
-                    />
-                  </el-select>
-                </template>
-
-                <!-- Radio Group -->
-                <el-radio-group
-                  v-else-if="isRadioField(field)"
-                  v-model="formModel[field.name]"
-                >
-                  <el-radio
-                    v-for="option in field.options"
-                    :key="option.value"
-                    :value="option.value"
-                  >
-                    {{ option.label }}
-                  </el-radio>
-                </el-radio-group>
-
-                <!-- Checkbox -->
-                <template v-else-if="isCheckboxField(field)">
-                  <el-checkbox
-                    v-if="!field.multiple"
-                    v-model="formModel[field.name]"
-                    :label="field.label"
-                  />
-                  <el-checkbox-group v-else v-model="formModel[field.name]">
-                    <el-checkbox
-                      v-for="option in field.options"
-                      :key="option.value"
-                      :value="option.value"
-                    >
-                      {{ option.label }}
-                    </el-checkbox>
-                  </el-checkbox-group>
-                </template>
               </el-form-item>
             </el-col>
             <!-- Add a new row after reaching the column count -->
@@ -135,7 +55,7 @@
       width="500px"
       :close-on-click-modal="false"
     >
-      <DynamicField
+      <EditDynamicField
         v-if="editingField"
         :field="editingField"
         @save="saveFieldChanges"
@@ -149,35 +69,16 @@ import { ref } from "vue"
 import * as formData from "../../data/index.json"
 import { ElMessage } from "element-plus"
 import { Edit } from "@element-plus/icons-vue"
-import DynamicField from "./EditDynamicField.vue"
+import EditDynamicField from "./EditDynamicField.vue"
+import DynamicField from "./DynamicField.vue"
 import type {
   FormField,
   InputField,
-  TextAreaField,
-  DateField,
-  SelectField,
-  RadioField,
-  CheckboxField,
   FormSection,
   FormModel,
   FormRules,
-  FormOption,
   BaseFormField,
 } from "../../types/form-schema"
-
-// Type guards
-const isInputField = (field: FormField): field is InputField =>
-  field.type === "input"
-const isTextAreaField = (field: FormField): field is TextAreaField =>
-  field.type === "textarea"
-const isDateField = (field: FormField): field is DateField =>
-  field.type === "datepicker"
-const isSelectField = (field: FormField): field is SelectField =>
-  field.type === "select"
-const isRadioField = (field: FormField): field is RadioField =>
-  field.type === "radioGroup"
-const isCheckboxField = (field: FormField): field is CheckboxField =>
-  field.type === "checkbox"
 
 // Type assertion for the imported JSON data
 const typedFormData = formData as {
@@ -195,7 +96,7 @@ const formRules = ref<FormRules>({})
 const initializeFormModel = () => {
   typedFormData.form.form_data.forEach((section: FormSection) => {
     section.fields.forEach((field: FormField) => {
-      if (isCheckboxField(field) && field.multiple) {
+      if (field.type === "checkbox" && field.multiple) {
         formModel.value[field.name] = []
       } else {
         formModel.value[field.name] = ""
@@ -241,7 +142,7 @@ const saveFieldChanges = (updatedField: BaseFormField | InputField) => {
 
       // Handle special case for input fields with variant
       if (
-        isInputField(section.fields[fieldIndex]) &&
+        section.fields[fieldIndex].type === "input" &&
         updatedField.type === "input" &&
         "variant" in updatedField
       ) {
@@ -260,26 +161,6 @@ const saveFieldChanges = (updatedField: BaseFormField | InputField) => {
 
   // Optional: Show success message
   ElMessage.success("Field updated successfully")
-}
-
-// Handle parent select change to update child options
-const handleParentSelectChange = () => {
-  const field = typedFormData.form.form_data
-    .flatMap((section) => section.fields)
-    .find((f) => isSelectField(f) && f.childIncluded) as SelectField
-
-  if (field && field.childName) {
-    formModel.value[field.childName] = ""
-  }
-}
-
-// Get child options based on parent selection
-const getChildOptions = (field: SelectField): FormOption[] => {
-  const parentValue = formModel.value[field.name] as string
-  const parentOption = field.options.find(
-    (opt: FormOption) => opt.value === parentValue
-  )
-  return parentOption?.options || []
 }
 
 // Handle form submission
