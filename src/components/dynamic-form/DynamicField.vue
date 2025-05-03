@@ -96,7 +96,7 @@ import type {
   FormSection,
 } from "../../types/form-schema"
 
-const props = defineProps<{
+const { field, formData } = defineProps<{
   field: FormField
   formData: FormSection[]
 }>()
@@ -119,7 +119,7 @@ const isCheckboxField = (field: FormField): field is CheckboxField =>
 
 // Handle parent select change to update child options
 const handleParentSelectChange = () => {
-  const field = props.formData
+  const field = formData
     .flatMap((section) => section.fields)
     .find((f) => isSelectField(f) && f.childIncluded) as SelectField
 
