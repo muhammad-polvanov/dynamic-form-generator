@@ -150,90 +150,20 @@ import * as formData from "../../data/index.json"
 import { ElMessage } from "element-plus"
 import { Edit } from "@element-plus/icons-vue"
 import DynamicField from "./EditDynamicField.vue"
-
-interface FormOption {
-  id?: number
-  label: string
-  value: string
-  options?: FormOption[]
-}
-
-interface BaseFormField {
-  key: string
-  type: string
-  label: string
-  name: string
-  placeholder?: string
-  rules?: FormRule[]
-  editable?: boolean
-}
-
-interface FormRule {
-  required?: boolean
-  message: string
-  type?: string
-  min?: number
-}
-
-interface InputField extends BaseFormField {
-  type: "input"
-  variant: string
-}
-
-interface TextAreaField extends BaseFormField {
-  type: "textarea"
-}
-
-interface DateField extends BaseFormField {
-  type: "datepicker"
-}
-
-interface SelectField extends BaseFormField {
-  type: "select"
-  childIncluded: boolean
-  childLabel: string
-  childPlaceholder: string
-  childName: string
-  options: FormOption[]
-}
-
-interface RadioField extends BaseFormField {
-  type: "radioGroup"
-  options: FormOption[]
-}
-
-interface CheckboxField extends BaseFormField {
-  type: "checkbox"
-  multiple?: boolean
-  options?: FormOption[]
-}
-
-type FormField =
-  | InputField
-  | DateField
-  | SelectField
-  | RadioField
-  | CheckboxField
-  | TextAreaField
-interface FormSection {
-  id: number
-  columns: number // Number of form elements in one row
-  fields: FormField[]
-}
-
-interface FormModel {
-  [key: string]: string | string[] | boolean
-}
-
-interface FormRules {
-  [key: string]: Array<{
-    required?: boolean
-    message: string
-    type?: string
-    min?: number
-    trigger: string[]
-  }>
-}
+import type {
+  FormField,
+  InputField,
+  TextAreaField,
+  DateField,
+  SelectField,
+  RadioField,
+  CheckboxField,
+  FormSection,
+  FormModel,
+  FormRules,
+  FormOption,
+  BaseFormField,
+} from "../../types/form-schema"
 
 // Type guards
 const isInputField = (field: FormField): field is InputField =>
