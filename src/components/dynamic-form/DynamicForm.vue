@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, reactive } from "vue"
 import * as formData from "../../data/index.json"
 import { ElMessage } from "element-plus"
 import { Edit } from "@element-plus/icons-vue"
@@ -81,12 +81,14 @@ import type {
 } from "../../types/form-schema"
 
 // Type assertion for the imported JSON data
-const typedFormData = formData as {
-  form: {
-    title: string
-    form_data: FormSection[]
+const typedFormData = reactive(
+  formData as {
+    form: {
+      title: string
+      form_data: FormSection[]
+    }
   }
-}
+)
 
 const formRef = ref()
 const formModel = defineModel<FormModel>({ required: true })
@@ -134,23 +136,25 @@ const saveFieldChanges = (updatedField: BaseFormField | InputField) => {
       (f) => f.key === updatedField.key
     )
     if (fieldIndex !== -1) {
+      // Create a new field object to trigger reactivity
+      const newField = { ...section.fields[fieldIndex] }
       // Update common properties
-      section.fields[fieldIndex].label = updatedField.label
+      newField.label = updatedField.label
       if (updatedField.placeholder) {
-        section.fields[fieldIndex].placeholder = updatedField.placeholder
+        newField.placeholder = updatedField.placeholder
       }
 
       // Handle special case for input fields with variant
       if (
-        section.fields[fieldIndex].type === "input" &&
+        newField.type === "input" &&
         updatedField.type === "input" &&
         "variant" in updatedField
       ) {
-        ;(section.fields[fieldIndex] as InputField).variant = (
-          updatedField as InputField
-        ).variant
+        ;(newField as InputField).variant = (updatedField as InputField).variant
       }
 
+      // Replace the old field with the new one
+      section.fields[fieldIndex] = newField
       break
     }
   }
