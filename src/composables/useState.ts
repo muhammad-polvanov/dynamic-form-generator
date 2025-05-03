@@ -29,6 +29,7 @@ export const useState = (formData: FormSection[]) => {
       })
     })
   }
+  initializeFormModel()
 
   return {
     formModel,
