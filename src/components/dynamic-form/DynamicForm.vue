@@ -149,7 +149,7 @@ import { ref } from "vue"
 import * as formData from "../../data/index.json"
 import { ElMessage } from "element-plus"
 import { Edit } from "@element-plus/icons-vue"
-import DynamicField from "./DynamicField.vue"
+import DynamicField from "./EditDynamicField.vue"
 
 interface FormOption {
   id?: number
