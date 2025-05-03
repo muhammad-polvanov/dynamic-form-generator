@@ -9,42 +9,31 @@
   >
     <h1 class="text-2xl font-bold mb-2">{{ typedFormData.form.title }}</h1>
     <template v-for="section in typedFormData.form.form_data" :key="section.id">
-      <div class="section-wrapper">
-        <el-row :gutter="20">
-          <template v-for="(field, index) in section.fields" :key="field.key">
-            <el-col :span="24 / (section.columns || 1)">
-              <el-form-item :label="field.label" :prop="field.name">
-                <template #label>
-                  <div class="flex items-center gap-2">
-                    <span class="text-sm font-medium">{{ field.label }}</span>
-                    <ElIcon
-                      v-if="field.editable"
-                      class="cursor-pointer hover:text-blue-500"
-                      @click.prevent.stop="handleEditField(field)"
-                    >
-                      <Edit />
-                    </ElIcon>
-                  </div>
-                </template>
-                <DynamicField
-                  v-model="formModel"
-                  :field="field"
-                  :form-data="typedFormData.form.form_data"
-                />
-              </el-form-item>
-            </el-col>
-            <!-- Add a new row after reaching the column count -->
-            <el-col
-              v-if="
-                (index + 1) % section.columns === 0 &&
-                index !== section.fields.length - 1
-              "
-              :span="24"
-              class="row-separator"
-            ></el-col>
-          </template>
-        </el-row>
-      </div>
+      <el-row :gutter="20">
+        <template v-for="(field, index) in section.fields" :key="field.key">
+          <el-col :span="24 / (section.columns || 1)">
+            <el-form-item :label="field.label" :prop="field.name">
+              <template #label>
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-medium">{{ field.label }}</span>
+                  <ElIcon
+                    v-if="field.editable"
+                    class="cursor-pointer hover:text-blue-500"
+                    @click.prevent.stop="handleEditField(field)"
+                  >
+                    <Edit />
+                  </ElIcon>
+                </div>
+              </template>
+              <DynamicField
+                v-model="formModel"
+                :field="field"
+                :form-data="typedFormData.form.form_data"
+              />
+            </el-form-item>
+          </el-col>
+        </template>
+      </el-row>
     </template>
     <el-button type="primary" @click="handleSubmit">Submit</el-button>
 
@@ -185,13 +174,4 @@ const handleSubmit = async () => {
 initializeFormModel()
 </script>
 
-<style scoped>
-.section-wrapper {
-  margin-bottom: 20px;
-}
-
-.row-separator {
-  height: 0;
-  margin: 10px 0;
-}
-</style>
+<style scoped></style>
