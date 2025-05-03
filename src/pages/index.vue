@@ -29,8 +29,7 @@ import DraggableFields from "../components/dynamic-form/DraggableFields.vue"
 import { useDraggable } from "../composables/useDraggable"
 import { useState } from "../composables/useState"
 
-const { formModel, formRules, typedFormData, initializeFormModel } =
-  useState(formData)
+const { formModel, formRules, typedFormData } = useState(formData)
 
 const {
   isDragging,
@@ -39,9 +38,6 @@ const {
   handleDragStart,
   handleDragEnd,
 } = useDraggable(typedFormData.form.form_data)
-
-// Initialize form on component mount
-initializeFormModel()
 </script>
 <style scoped>
 .cursor-move {

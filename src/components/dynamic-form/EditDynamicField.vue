@@ -45,7 +45,6 @@ const props = defineProps<{
 
 // Define emits with proper typing
 const emit = defineEmits<{
-  (e: "update:field", field: BaseField): void
   (e: "save", field: BaseField): void
 }>()
 
@@ -74,7 +73,6 @@ watch(
 // Function to save changes
 const saveChanges = () => {
   // Emit the updated field for parent component to handle
-  emit("update:field", formField.value)
   emit("save", formField.value)
 }
 </script>
