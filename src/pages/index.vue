@@ -7,6 +7,7 @@
         :key="isDragging ? 'dragging' : 'not-dragging'"
         :form-data="typedFormData"
         @dragOver="handleDragOver"
+        @update-field="handleUpdateField"
       />
       <div>
         <FormPreview :form-model="formModel" />
@@ -28,7 +29,6 @@ import FormPreview from "../components/dynamic-form/FormPreview.vue"
 import DraggableFields from "../components/dynamic-form/DraggableFields.vue"
 import { useDraggable } from "../composables/useDraggable"
 import { useState } from "../composables/useState"
-
 const { formModel, formRules, typedFormData } = useState(formData)
 
 const {
@@ -38,6 +38,33 @@ const {
   handleDragStart,
   handleDragEnd,
 } = useDraggable(typedFormData.form.form_data)
+
+const handleUpdateField = (updatedField: {
+  key: string
+  label: string
+  placeholder?: string
+}) => {
+  // Find the field in the form data and update it
+  const sections = typedFormData.form.form_data
+  for (const section of sections) {
+    const fieldIndex = section.fields.findIndex(
+      (f) => f.key === updatedField.key
+    )
+    if (fieldIndex !== -1) {
+      // Create a new field object to trigger reactivity
+      const newField = { ...section.fields[fieldIndex] }
+      // Update common properties
+      newField.label = updatedField.label
+      if (updatedField.placeholder) {
+        newField.placeholder = updatedField.placeholder
+      }
+
+      // Replace the old field with the new one
+      section.fields[fieldIndex] = newField
+      break
+    }
+  }
+}
 </script>
 <style scoped>
 .cursor-move {

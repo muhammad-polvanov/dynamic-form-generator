@@ -85,6 +85,10 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: "dragOver", sectionId: number): void
+  (
+    e: "update-field",
+    updatedField: { key: string; label: string; placeholder?: string }
+  ): void
 }>()
 
 // Type assertion for the imported JSON data
@@ -141,27 +145,8 @@ const saveFieldChanges = (updatedField: {
   placeholder?: string
 }) => {
   if (!editingField.value) return
-  // Find the field in the form data and update it
-  const sections = props.formData.form.form_data
-  for (const section of sections) {
-    const fieldIndex = section.fields.findIndex(
-      (f) => f.key === updatedField.key
-    )
-    if (fieldIndex !== -1) {
-      // Create a new field object to trigger reactivity
-      const newField = { ...section.fields[fieldIndex] }
-      // Update common properties
-      newField.label = updatedField.label
-      if (updatedField.placeholder) {
-        newField.placeholder = updatedField.placeholder
-      }
 
-      // Replace the old field with the new one
-      section.fields[fieldIndex] = newField
-      break
-    }
-  }
-
+  emit("update-field", updatedField)
   // Close the editor
   showFieldEditor.value = false
   editingField.value = null
